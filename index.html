@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+              <html>
+              <head>
+                  <title>Playing hamster</title>
+              </head>
+              <body>
+                  <canvas id="canvas" width="1200" height="800"></canvas>
+        		<img id = "a" src = "http://d.hiphotos.baidu.com/baike/s%3D220/sign=41260a257bf40ad111e4c0e1672c1151/6159252dd42a28347fc60b165bb5c9ea15cebf4e.jpg">
+        		<img id = "b" src = "http://www.pd4pic.com/images/mallet-fantasy-hammer-weapon-medieval-middle-ages.png">
+        		<img id = "c" src = "http://image.51wp.com/uploads/120102/1-120102002335237.png">
+                  <script src="https://code.jquery.com/jquery-2.1.0.js"></script>
+<script>
+ function update(){
+ document.body.style.backgroundImage="url(http://img.redocn.com/sheji/20150602/xiyangxixiadeliren2dyouxichangjingsucai_4451142.jpg)"
+}  
+
+var canvas = document.getElementById("canvas"); 
+var ctx = canvas.getContext("2d");
+ctx.font = "30px Arial";
+var width = canvas.width; 
+var height = canvas.height;
+var score = 0;
+
+var td = new Array(),         
+    score = 0,                      
+    countDown = 25,        
+    interId = null,       
+    timeId = null;
+             
+var hamsterHtml = document.getElementById("a")
+var hammer = document.getElementById("b")
+var hithamster = document.getElementById("c")
+
+ $(hammer).css({
+ width:"15%",
+ height:"auto"
+ });
+ 
+ $("#canvas").mousemove(function(event){
+ this.hammerElement = $(hammer)
+ this.hammerElement.css({
+ position:"absolute",
+ left : event.pageX,
+ top : event.pageY
+ })
+ })
+
+var grid = function(){
+ctx.beginPath()
+ctx.moveTo(0,0)
+ctx.lineTo(0,780)
+ctx.moveTo(0,260)
+ctx.lineTo(780,260)
+ctx.moveTo(0,520)
+ctx.lineTo(780,520)
+ctx.moveTo(0,780)
+ctx.lineTo(780,780)
+ctx.moveTo(260,0)
+ctx.lineTo(260,780)
+ctx.moveTo(520,0)
+ctx.lineTo(520,780)
+ctx.moveTo(780,0)
+ctx.lineTo(780,780)
+ctx.stroke()
+}
+
+ function timeShow(){
+ ctx.fillText("countDown: " + countDown,0,800);
+ if(countDown === 0){ 
+ alert("Your grades are "+score+"!");      
+   end();        
+   return;
+    }else{          
+    countDown = countDown-1;              
+    } 
+    } 
+ 
+function scoreShow(){
+ ctx.fillText("Your scores are "+score,800,50)
+}
+var saveX; 
+var saveY;   
+var game = setInterval(function(){
+ctx.clearRect(0,0,1200,800)
+grid();
+if(countDown>0){
+var square = [];
+var a = [];
+for (var i = 0; i < 9; i++)
+a.push(1);
+for (var i = 0; i < 3; i++)
+square.push(a.slice(i * 3, (i + 1) * 3));
+square[Math.floor(Math.random()*3)][Math.floor(Math.random()*3)] = 0
+for(var i = 0; i < 3; i++)
+{
+	for(var j = 0; j < 3; j++)
+	{
+		if(square[i][j] === 0){
+		ctx.drawImage(hamsterHtml, 260*i, 260*j)
+		saveX=260*i
+		saveY=260*j	
+}
+	    }
+	}
+  }
+ 
+timeShow();
+scoreShow()
+},1000)
+
+$("body").click(function(event){
+ if((event.pageX>saveX)&&(event.pageX<saveX+260)&&(event.pageY>saveY)&&(event.pageY<saveY+260)){
+  score+=1;
+  var canvas = document.getElementById("canvas"); 
+  var ctx = canvas.getContext("2d");
+  ctx.drawImage(hithamster,saveX,saveY)
+  saveX=-300;saveY=-300
+  }
+ })
+
+
+function end(){
+	clearInterval(game);
+} 
+</script>
+<div style = "left:500px;position:absolute;top:800px;font-size:30px;color:#FF6699;font-weight:bold;font-family:STHupo">Whac-A-Mole</div>
+</body>
+</html>
